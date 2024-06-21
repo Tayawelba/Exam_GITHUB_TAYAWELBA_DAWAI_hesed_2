@@ -5,7 +5,7 @@ def upload_model_to_hf():
     # Récupérer le token d'authentification de Hugging Face
     hf_token = os.getenv('HF_TOKEN')
     model_path = "model"
-    repo_name = "tayawelba/examen_github"
+    repo_name = "tayawelba/Exam_GITHUB_TAYAWELBA_DAWAI_hesed"
 
     # Authentifier
     api = HfApi()
