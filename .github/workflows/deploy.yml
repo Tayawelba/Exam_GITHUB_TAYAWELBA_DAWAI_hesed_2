@@ -1,0 +1,48 @@
+name: Exécuter les scripts et envoyer un email
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: read-all
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install --upgrade pip
+        pip install transformers huggingface_hub
+
+    - name: Train Model
+      run: |
+        python script/train_evaluate_model.py
+    - name: Test Model
+      run: |
+        python script/test_evaluate_model.py
+    - name: Val Model
+      run: |
+        python script/val_evaluate_model.py
+    - name: Upload Model to Hugging Face
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      run: |
+        python script/upload_to_hf.py
+      continue-on-error: true
+    - name: Send Email
+      env:
+        EMAIL_USER: ${{ secrets.EMAIL_USER }}
+        EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+      run: |
+        python script/send_email.py
