@@ -1,4 +1,4 @@
-name: Exécuter les scripts et envoyer un email
+name: Exécuter les scripts, envoyer un email (model et documentatio) et deployement sur HF
 
 on:
   push:
